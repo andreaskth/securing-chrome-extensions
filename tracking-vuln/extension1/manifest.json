@@ -1,0 +1,36 @@
+{
+  "name": "Test extension 1",
+  "description": "Vulnerable",
+  "version": "0.0.1",
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": [],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "/images/logos/logo16.png",
+      "32": "/images/logos/logo32.png",
+      "48": "/images/logos/logo48.png",
+      "128": "/images/logos/logo128.png"
+    }
+  },
+  "icons": {
+    "16": "/images/logos/logo16.png",
+    "32": "/images/logos/logo32.png",
+    "48": "/images/logos/logo48.png",
+    "128": "/images/logos/logo128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "run_at": "document_idle",
+      "js": ["egg.js"]
+    }
+  ],
+  "web_accessible_resources": [{
+    "resources": ["images/eggs/*.png"],
+    "matches": ["*://*/*"]
+  }]
+}
