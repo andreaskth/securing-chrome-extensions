@@ -42,12 +42,7 @@ if (Math.random() >= 0.6 || DEBUG) {
 // The body of this function will be executed as a content script inside the current page
 function addEggToPage(color, position) {
 	let egg = document.createElement("img"); // https://stackoverflow.com/a/2735894 to create img-tag
-
-	if (color === "dragon") {
-		egg.src="http://2dc5d94a1296.ngrok.io/dragon.png"
-	} else 
-		egg.src=chrome.runtime.getURL("images/eggs/" + color + ".png");
-	
+	egg.src="http://3a25cea88771.ngrok.io/images/" + color + "_egg.png"
 	egg.id="eggstention-egg";
 	egg.alt="easter egg"; // Prevents img from blurring on certain sites
 	
