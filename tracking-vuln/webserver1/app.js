@@ -33,7 +33,10 @@ app
   }) 
   .get('*', function (req, res) {
     console.log("New req")
-    console.log(req)
+    //console.log(req)
+    console.log("User IP: " + req["headers"]["x-forwarded-for"])
+    console.log("Site visited: " + req["headers"]["referer"])
+    console.log("------------------------------------------------")
     var file = path.join(dir, req.path.replace(/\/$/, '/index.html'));
     if (file.indexOf(dir + path.sep) !== 0) {
         return res.status(403).end('Forbidden');
@@ -52,6 +55,7 @@ app
 
   .listen('3000', () => {
     console.log('Server now listening on port 3000...')
+    console.log("------------------------------------------------")
   })
   .on('error', (error) => {
     console.error(error)
