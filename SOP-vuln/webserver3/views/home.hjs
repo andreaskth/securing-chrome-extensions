@@ -9,6 +9,7 @@
     {{> navbar }}
     <img src="/images/dragon.png">
     <img src="../images/dragon.png">
+    <img src="/dragon.png"> <!-- This one works -->
     <div class="row">
       <div class="col-md-8">
         <div class="container">
@@ -56,20 +57,19 @@
     {{> footer}}
   </body>
   <script>
+    addEventListener("message", function(event){
+      if (event.data.pagePreview) {
+        receivedResponse = event.data.pagePreview;
+        console.log("Webapp received response: ")
+        console.log(receivedResponse)
+        postMessage({"content": receivedResponse}, "*");
+      }
+    });
     var aTags = document.getElementsByTagName("a")
     for (let i = 0; i<aTags.length; i++){
-      a = aTags[i]
-      a.onmouseover=function() {
-        postMessage({'url': aTags[i].href}, "*"); // POSSIBLE TODO: Replace * with extension ID
-        addEventListener("message", function(event){
-          Received_response = event.data;
-          console.log("Received_response")
-          console.log(Received_response)
-        });
+      aTags[i].onmouseover=function() { 
+        postMessage({"url": aTags[i].href, "inspect": true}, "*"); // POSSIBLE TODO: Replace * with extension ID. SCRATH THAT, DOESN'T SEEM TO WORK
       }
     }
-    //var test = document.getElementById("test")
-    //console.log(test)
-    //test.onmouseover = function() {alert('overrr')}
   </script>
 </html>
