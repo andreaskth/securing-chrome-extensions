@@ -31,15 +31,11 @@ Next, follow the instructions in the [main README](../README.md) to load the ext
 ## Results
 Now, when you navigate to any webpage containing an HTML element with `id=content` – such as [this page](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) – the extension will insert content from your web server into the page. If `HACKER_MODE` is disabled, benign content is shown:
 
----
-
 ![Benign content](./images/cors-with-content.png "Benign content")
 
 ---
 
 And when `HACKER_MODE` is enabled (emulating a malicious or compromised content provider), nothing is shown to the user:
-
----
 
 ![No content](./images/cors-no-content.png "No content")
 
