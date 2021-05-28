@@ -1,8 +1,5 @@
-// Start file
-// npm install ...
-// also: npm install hjs
+
 const express = require('express')
-//const bodyParser = require('body-parser')
 const session = require('express-session')
 const flash = require('connect-flash')
 
@@ -10,7 +7,7 @@ var path = require('path');
 var fs = require('fs');
 
 var app = express()
-var dir = path.join(__dirname, 'public/images');
+var dir = path.join(__dirname, 'public');
 
 var mime = {
     html: 'text/html',
@@ -23,9 +20,17 @@ var mime = {
     js: 'application/javascript'
 };
 
+var images = fs.readdirSync('./public/images/');
+
 // App setup
 app
-  .set('view engine', 'hjs') 
+  .set('view engine', 'hjs')
+  .get('/', (req, res) => {
+    var imagePayload = { 
+      images : JSON.stringify(images)
+    };
+    res.render('home', imagePayload)
+  }) 
   .get('*', function (req, res) {
     console.log("New req")
     console.log(req)
@@ -44,21 +49,6 @@ app
         res.status(404).end('Not found');
     });
 })
-  //.use(express.static(dir))
-  //.use(bodyParser.json())
-  //.use(bodyParser.urlencoded({extended: false}))
-
-  //.use((req, res, next) => {
-  //  console.log(req);
-  //  next()
-  //})
-  .get('/', (req, res) => {
-
-    res.render('forumHome', {})
-    //stats.getStats(st => {
-    //  res.render('forumHome', {user: req.user, error: req.flash('error'), success: req.flash('success'), stats: st})
-    //})
-  })
 
   .listen('3000', () => {
     console.log('Server now listening on port 3000...')
