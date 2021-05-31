@@ -1,4 +1,5 @@
-let imageSrc = "http://fe815b974335.ngrok.io" + "/images/"
+let imageSrc = "http://fe815b974335.ngrok.io" 
+imageSrc += "/images/"
 
 let eggNames = {
 	"yellow": "Yummy Yellow",
