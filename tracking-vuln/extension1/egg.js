@@ -1,11 +1,4 @@
-/**
-* Content-script that runs in URLs using http or https.
-* (See https://stackoverflow.com/a/16096545 for regex in manifest.json)
-*
-* run_at is "document_idle", reference: https://developer.chrome.com/docs/extensions/mv3/content_scripts/#document_idle, possibly found here: https://stackoverflow.com/questions/6497548/chrome-extension-make-it-run-every-page-load
-*/
-
-DEBUG = true;
+let imageSrc = "http://fe815b974335.ngrok.io" + "/images/"
 
 let eggNames = {
 	"yellow": "Yummy Yellow",
@@ -15,34 +8,33 @@ let eggNames = {
 	"dragon": "The Illusive Dragon Egg"
 };
 
-// Only spawn an egg with 40% probability
-if (Math.random() >= 0.6 || DEBUG) {
-	// Spawn random egg from collection
-	// Yummy Yellow: 24%
-	// Ridiculous Red 24%
-	// Gluttonous Green 24%
-	// Succulent Sapphire: 24%
-	// Dragon Egg: 4%
-	var color;
-	let r = Math.random();
 
-	// https://stackoverflow.com/a/12259830
-	if (r <= .20) { color = "yellow"; } else
-	if (r <= .40) { color = "red"; } else
-	if (r <= .45) { color = "green"; } else
-	if (r <= .50) { color = "blue"; } else
-	{ color = "dragon"; /*console.log("showing dragon, r is: " + r);*/ }
+// Spawn random egg from collection
+// Yummy Yellow: 24%
+// Ridiculous Red 24%
+// Gluttonous Green 24%
+// Succulent Sapphire: 24%
+// Dragon Egg: 4%
+var color;
+let r = Math.random();
 
-	// Spawn at random location (top/bottom right/left)
-	let position = Math.floor(Math.random()*4) // [0,3], Math.random is [0,1)
+// https://stackoverflow.com/a/12259830
+if (r <= .24) { color = "yellow"; } else
+if (r <= .48) { color = "red"; } else
+if (r <= .72) { color = "green"; } else
+if (r <= .96) { color = "blue"; } else
+{ color = "dragon"; }
 
-	addEggToPage(color, position);
-}
+// Spawn at random location (top/bottom right/left)
+let position = Math.floor(Math.random()*4) // [0,3], Math.random is [0,1)
+
+addEggToPage(color, position);
+
 
 // The body of this function will be executed as a content script inside the current page
 function addEggToPage(color, position) {
-	let egg = document.createElement("img"); // https://stackoverflow.com/a/2735894 to create img-tag
-	egg.src="http://3a25cea88771.ngrok.io/images/" + color + "_egg.png"
+	let egg = document.createElement("img"); 
+	egg.src=imageSrc + color + "_egg.png"
 	egg.id="eggstention-egg";
 	egg.alt="easter egg"; // Prevents img from blurring on certain sites
 	
@@ -78,26 +70,6 @@ function addEggToPage(color, position) {
 	});
 }
 
-/*
-Source: https://www.w3schools.com/howto/howto_css_modals.asp
-<div id="myModal" class="modal">
-
-  <!-- Modal content -->
-  <div class="modal-content">
-    <div class="modal-header">
-      <span class="close">&times;</span>
-      <h2 style="text-align:center">You found a new egg!</h2>
-    </div>
-    <div class="modal-body">
-      <p>Add image of egg here...</p>
-    </div>
-    <div class="modal-footer">
-      <h3 style="text-align:center">Click here to show your colleggtion</h3>
-    </div>
-  </div>
-
-</div>
-*/
 function collectEgg(color) {
 	console.log("Collecting egg");
 

@@ -1,12 +1,12 @@
 {
-  "name": "Test extension 1",
-  "description": "Vulnerable",
+  "name": "Outsourced Easter Eggstention",
+  "description": "Just like your favorite eggstention, but now loads the egg sprites from a webserver instead!",
   "version": "0.0.1",
   "manifest_version": 3,
   "background": {
     "service_worker": "background.js"
   },
-  "permissions": [],
+  "permissions": ["storage"],
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
@@ -28,9 +28,5 @@
       "run_at": "document_idle",
       "js": ["egg.js"]
     }
-  ],
-  "web_accessible_resources": [{
-    "resources": ["images/eggs/*.png"],
-    "matches": ["*://*/*"]
-  }]
+  ]
 }
