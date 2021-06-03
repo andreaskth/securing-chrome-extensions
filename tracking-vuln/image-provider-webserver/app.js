@@ -32,10 +32,12 @@ app
     res.render('home', imagePayload)
   }) 
   .get('*', function (req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
     console.log("New req")
     //console.log(req)
     console.log("User IP: " + req["headers"]["x-forwarded-for"])
-    console.log("Site visited: " + req["headers"]["referer"])
+    console.log("Referrer: " + req["headers"]["referer"])
+    console.log("Origin: " + req["headers"]["origin"])
     console.log("------------------------------------------------")
     var file = path.join(dir, req.path.replace(/\/$/, '/index.html'));
     if (file.indexOf(dir + path.sep) !== 0) {

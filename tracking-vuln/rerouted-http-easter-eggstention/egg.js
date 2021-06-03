@@ -1,5 +1,6 @@
-let imageSrc = "https://aa82afb4d4ca.ngrok.io" 
+let imageSrc = "https://d5dbfdc3e2d3.ngrok.io" 
 imageSrc += "/images/"
+let proxyServer = "https://c6c76b5322d0.ngrok.io"
 
 let eggNames = {
 	"yellow": "Yummy Yellow",
@@ -35,7 +36,6 @@ addEggToPage(color, position);
 // The body of this function will be executed as a content script inside the current page
 function addEggToPage(color, position) {
 	let egg = document.createElement("img"); 
-	egg.src=imageSrc + color + "_egg.png"
 	egg.id="eggstention-egg";
 	egg.alt="easter egg"; // Prevents img from blurring on certain sites
 	
@@ -63,7 +63,13 @@ function addEggToPage(color, position) {
 
 	// https://stackoverflow.com/a/43838105 and https://developer.mozilla.org/en-US/docs/Web/API/ParentNode/prepend for 'prepend'
 	//document.documentElement.prepend(egg); // https://developer.mozilla.org/en-US/docs/Web/API/Document/documentElement to get root-element
-	document.body.prepend(egg);
+	fetch(proxyServer + "?url=" + imageSrc + color + "_egg.png", {referrerPolicy:"no-referrer"})
+	.then(res => res.blob())
+	.then(blob => {
+		imgSrc = URL.createObjectURL(blob)
+		egg.src = imgSrc
+		document.body.prepend(egg);
+	})
 
 	egg.addEventListener("click", async (event) => {
 		collectEgg(color);
