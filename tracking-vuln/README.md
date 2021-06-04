@@ -1,25 +1,24 @@
 # Content provider tracking vulnerability
 
 ## Brief theory
-
-We have an extension that spawns easter eggs on the websites you visit and let's you collect these eggs. This extension loads the images from a third-party webserver. Each time a new egg is to be spawned, an HTTP-request is sent to this third-party image provider. Since we spawn an egg each time the user loads a page, an HTTP request is sent each time the user loads a page.
+We have an extension that spawns easter eggs on the websites you visit and lets you collect these eggs. This extension loads the images from a third-party webserver. Each time a new egg is to be spawned, an HTTP-request is sent to this third-party image provider. Since we spawn an egg each time the user loads a page, an HTTP request is sent each time the user loads a page.
 
 The problem with this extension is that when the HTTP requests are sent they contain not only the IP-address of the user but also the name of the website (more precisely [the domain, the host and the scheme](https://webmasters.stackexchange.com/questions/69477/how-to-understand-scheme-host-domainport-path-filename)) the request is sent from; set in the so-called HTTP "referer" header. This means that each time the user loads a website, its name and the IP-address of the user is sent to the third-party image provider. This allows the image provider to construct the browsing history of a user if it so wishes.
 
 ## How to run
 
 ### Web server
-As outlined in the [main README](../README.md) enter the web server folder (here called 
+As outlined in the [main README](../README.md), enter the web server folder (here called 
 *image-provider-webserver*) and run `npm install`, and then run `node app.js` in the same folder to start the server. The default port used by the server is 3000; if you are using this port for something else you can change the port in `app.js` (don't forget to change the other occurrences of 3000 in this document as well).
 
 When the web server is running, you can visit `localhost:3000` to verify that you can see a list of links pointing to images.  
 
-To make the web server externally accessible, you can for example utilize *ngrok* as described in the [main README](../README.md).
+To make the web server externally accessible, you can for example utilize *ngrok* as described in the [main README]((https://github.com/andreaskth/securing-chrome-extensions#how-to-make-web-server-externally-accessible-with-ngrok)).
 
 ### Extension
-The vulnerable extensions is located in *vulnerable-easter-eggstention*. In the content script `egg.js` change the `imageSrc` variable on the first line to point to the URL where the web server is hosted. The addition of `"/images/"` on the second line should not be removed since this path is necessary to access the individual images.
+The vulnerable extensions is located in *vulnerable-easter-eggstention*. In the content script `egg.js` change the `imageSrc` variable on the first line to point to the URL where the web server is hosted (for example, the ngrok.io URL if you are using that). The addition of `"/images/"` on the second line should not be removed since this path is necessary to access the individual images.
 
-Next, follow the instructions in the [main README](../README.md) to load the extension into your browser locally. 
+Next, follow the instructions in the [main README](https://github.com/andreaskth/securing-chrome-extensions#how-to-load-extensions-into-your-browser-locally) to load the extension into your browser locally. 
 
 ## Results
 Every website you visit will contain a lovely easter egg for you to collect! 
@@ -34,7 +33,7 @@ The first thing to consider is to not load the images from a third-party provide
 (Note that when referring to line numbers, the original lines are intended, NOT the lines after you have started making changes. Also note that we provide a fixed version of the extension so you do not have to follow along with these instrcutions to test it out)
 
 ### egg.js of the vulnerable extension
-The first thing we have to do is to replace the way we are getting the image; when directly setting the `src` attribute we have no control over the outgoing HTTP-request. Thus we remove line 38. We also replace line 66 (which would add the egg to the page) with the following:
+The first thing we have to do is to replace the way we are getting the image; when directly setting the `src` attribute in an image tag we have no control over the outgoing HTTP-request. Thus we remove line 38. We also replace line 66 (which would add the egg to the page) with the following:
 ```javascript
 fetch(imageSrc + color + "_egg.png", {referrerPolicy:"no-referrer"})
 	.then(res => res.blob())
@@ -46,7 +45,7 @@ fetch(imageSrc + color + "_egg.png", {referrerPolicy:"no-referrer"})
 ``` 
 This code makes an HTTP-request to the image URL and specifies that we do not want to include the "referer" header. Then it transforms the response so that we get a URL that we can use for source for our image. Lastly we add the egg to the page.
 
-However, this introduces a new problem. When sending our HTTP-request in this fashion we get a new header in the request: "origin". This header will similarly to the "referer" give away our visited website. To fix this we have to send our request through a proxy. We have provided a simple proxy server in the folder *proxy-server*, see the [section below](#proxyServer) for details. 
+However, this introduces a new problem. When sending our HTTP-request in this fashion we get a new header in the request: "origin". This header will, similarly to the "referer", give away our visited website. To fix this we have to send our request through a proxy. We have provided a simple proxy server in the folder *proxy-server*, see the [section below](#proxyServer) for details. 
 
 We create a variable for the proxyServer address at the top of the file `let proxyServer = "the_proxy_address"`, and update the code snippet above to:
 ```javascript
