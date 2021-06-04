@@ -10,7 +10,7 @@ Normally the SOP prevents websites from reading the response if they request dat
 ## How to run
 
 ### Malicious website
-As outlined in the [main README](../README.md) enter the website folder (here called 
+As outlined in the [main README](../README.md), enter the website folder (here called 
 *website-with-links*) and run `npm install`, and then run `node app.js` in the same folder to start the server. The default port used by the server is 3000; if you are using this port for something else you can change the port in `app.js` (don't forget to change the other occurrences of 3000 in this document as well).
 
 When the site is up, you can visit `localhost:3000` to verify that you can see a couple of hyperlinks.  
