@@ -7,9 +7,7 @@ let defaultHeight = 400
 let inspectIDs = new Set()
 let previewNum = 0
 
-addEventListener("message", function(event){
-	//console.log("Event")
-	//console.log(event)
+addEventListener("message", async function(event){
 
 	if (event.data.inspectList) {
 		for (let i = 0; i < event.data.inspectList.length; i++) {
@@ -22,13 +20,20 @@ addEventListener("message", function(event){
 		let ids = event.data.addPreviewList
 		console.log("Adding preview to:")
 		console.log(ids)
-		
-		
-			
-		let x = event.data.x ? event.data.x : this.window.innerWidth / 2
-		let y = event.data.y ? event.data.y : this.window.innerHeight / 2
-		let width = event.data.width ? event.data.width : defaultWidth
-		let height = event.data.height ? event.data.height : defaultHeight
+		for (let i = 0; i < ids.length; i++) {
+			let current = this.document.getElementById(ids[i])
+			let pos = offset(current)
+			setPreview(
+				current, 
+				await getPreviewContent(current.href), 
+				{
+					left : (current.getBoundingClientRect().width + pos.left) + "px", 
+					top : (current.getBoundingClientRect().height + pos.top) + "px",
+					width : defaultWidth + "px", 
+					height : defaultHeight + "px"
+				}
+			)
+		}
 	}
 	else {
 		// Not a valid event payload
@@ -83,10 +88,8 @@ function setPreview(element, content, style) {
 		preview.style.height = style.height
 		preview.style.backgroundColor = "white"
 		document.body.prepend(preview)
-		//preview.contentDocument.body.innerHTML = "Huh huh huh"
-		console.log("Content to set in preview:")
-		console.log(content)
 		preview.contentDocument.write(content)
+		//preview.src = element.href
 	}
 	element.onmouseout = function() {
 		document.getElementById(extensionID + "_preview_" + previewNum).remove()
@@ -95,14 +98,13 @@ function setPreview(element, content, style) {
 }
 
 async function getPreviewContent(url) {
-	console.log("Get preview content for: " + url)
 	if (cachedResponses[url]) {
 		console.log("Cached response for: " + url)
 		return cachedResponses[url];
 	}
 	else {
 		return new Promise((resolve, reject) => {chrome.runtime.sendMessage(extensionID, url, function(response) {
-			console.log("Content script received content from background (so not cached response)")
+			console.log("Content script received content from background (so not cached response for " + url + ")")
 			cachedResponses[url] = response
 			resolve(cachedResponses[url]);
 		})});

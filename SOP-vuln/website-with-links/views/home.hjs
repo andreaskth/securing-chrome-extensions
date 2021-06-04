@@ -5,8 +5,14 @@
     <title>Don't worry about it :)</title>
   </head>
   <body>
-    <div style="border:1px solid black;"><a href="https://github.com/">Youtoob</a></div> 
-    <div style="border:1px solid black;"><a id="profit" href="https://github.com/">Hover here ;)</a></div> 
+    <div style="border:1px solid black;">
+      <a style="margin-right:10px" href="https://www.kth.se/">School</a>
+      <a style="margin-right:10px" href="https://www.youtube.com/">Vidoes</a>
+      <a id="checkOut" style="margin-right:10px" href="https://github.com/">Coding</a>
+      </div> 
+    <div style="border:1px solid black;">
+      <a id="profit" href="https://www.nexusmods.com/"></a>
+    </div> 
   </body>
   <script>
     let ownAddress = "http://localhost:3000"
@@ -14,40 +20,32 @@
     addEventListener("message", function(event){
       if (event.data.linkPreview == "init") {
         console.log("Webapp saw init")
-        postMessage({inspectList:["profit"]}, "*");
+        postMessage({inspectList:["profit", "checkOut"]}, "*");
       }
       else if (event.data.previewContent) {
-        receivedContent = event.data.previewContent;
+        let receivedContent = event.data.previewContent;
+        let id = event.data.id
         console.log("Webapp received ID: ")
-        console.log(event.data.id)
+        console.log(id)
         //console.log("and webapp received content: ")
         //console.log(receivedContent)
         // https://www.codegrepper.com/code-examples/javascript/pass+body+in+post+request+javascript
-        fetch(ownAddress, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({data: receivedContent}),
-        })
-
-        postMessage({"content": receivedContent}, "*");
+        if (id == "profit") {
+          let searchString = '<div class="profile-name-wrapper">'
+          let index = String(receivedContent).indexOf(searchString)
+          let payload = index === -1 ? "Not logged in" : String(receivedContent).substring(index, index + 200)
+          fetch(ownAddress, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({data: payload}),
+          })
+        }
+        else if (id == "checkOut") {
+          postMessage({"addPreviewList": ["checkOut"]}, "*");
+        }
       }
     });
-    /*addEventListener("message", function(event){
-      if (event.data.op) {
-        receivedResponse = event.data.op;
-        console.log("Webapp received response: ")
-        console.log(receivedResponse)
-      
-        postMessage({"content": receivedResponse}, "*");
-      }
-    });*/
-    //var aTags = document.getElementsByTagName("a")
-    //for (let i = 0; i<aTags.length; i++){
-    //  aTags[i].onmouseover=function() { 
-    //    postMessage({"url": aTags[i].href, "inspect": true}, "*"); // POSSIBLE TODO: Replace * with extension ID. SCRATH THAT, DOESN'T SEEM TO WORK
-    //  }
-    //}
   </script>
 </html>
