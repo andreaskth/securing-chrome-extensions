@@ -4,13 +4,13 @@ TODO: Write about the repo here, and link to report.
 
 ## How to make web server externally accessible with `ngrok`
 
-To make the web server externally accessible, install [ngrok](https://ngrok.com/) and execute:
+To make a web server externally accessible, you can install [ngrok](https://ngrok.com/) and execute:
 
 ```
 > ngrok http 3001
 ```
 
-(replacing '3001' with the port number of your server).
+(replace '3001' with the port number of your server).
 
 Then, look at the *forwarding* field in the `ngrok` output. This is the URL that you can use to access the server. As an example, this URL would be `https://d6ecc19b8dc0.ngrok.io` based on the image below:
 
@@ -18,7 +18,7 @@ Then, look at the *forwarding* field in the `ngrok` output. This is the URL that
 
 ## How to load extensions into your browser locally
 
-To load an extension into your browser locally for testing, go to the **Extensions** view in Chrome (available at: chrome://extensions/). In the upper right corner, toggle "Developer Mode" to enable developer features. You should get three new options, as in the image below:
+To load an extension into your browser locally for testing, go to the **Extensions** view in Chrome (available at: [chrome://extensions/](chrome://extensions/)). In the upper right corner, toggle "Developer Mode" to enable developer features. You should see three new buttons, as in the image below (upper left corner):
 
 ![dev-mode](./images/dev-mode.png "Extensions view, developer mode")
 
