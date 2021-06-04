@@ -1,5 +1,11 @@
 # Unsafe fetch vulnerability
 
+## Brief theory
+
+When fetching content from third party content providers, extensions should take care to santizie the fetched content to avoid getting injected with malicious code. Even if the extension programmer trusts the third party content provider, there is no way to guarantee that the content provider has not been compromised.
+
+This extension showcases the risks of fetching data and injecting it as HTML in the extension, without sanitizing it. By returning malicious code, the content provider is able to fool the extension into leaking the user's browser cookies.
+
 ## How to run
 
 ### Web server
