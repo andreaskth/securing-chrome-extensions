@@ -8,8 +8,8 @@ let inspectIDs = new Set()
 let previewNum = 0
 
 addEventListener("message", function(event){
-	console.log("Event")
-	console.log(event)
+	//console.log("Event")
+	//console.log(event)
 
 	if (event.data.inspectList) {
 		for (let i = 0; i < event.data.inspectList.length; i++) {
@@ -36,21 +36,33 @@ addEventListener("message", function(event){
 	}
 });
 
-function setup() {
+// https://stackoverflow.com/questions/442404/retrieve-the-position-x-y-of-an-html-element-relative-to-the-browser-window
+// https://plainjs.com/javascript/styles/get-the-position-of-an-element-relative-to-the-document-24/
+function offset(el) {
+    var rect = el.getBoundingClientRect(),
+    scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
+    scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    return { top: rect.top + scrollTop, left: rect.left + scrollLeft }
+}
+
+async function setup() {
 	let aTags = document.getElementsByTagName("a")
 	for (let i = 0; i < aTags.length; i++) {
 		let current = aTags[i]
-		let content = getPreviewContent(current.href)
+		let content = await getPreviewContent(current.href)
 		if (inspectIDs.has(current.id)) {
-			postMessage({"id":current.id, "content":content})
+			postMessage({"id":current.id, "previewContent":content})
 		}
 		else {
+			pos = offset(current)
 			setPreview(
 				current, 
 				content, 
 				{
-					left : (this.window.innerWidth / 2 - (defaultWidth / 2)) + "px", 
-					top : (this.window.innerHeight / 2 - (defaultHeight / 2)) + "px",
+					//left : (this.window.innerWidth / 2 - (defaultWidth / 2)) + "px", 
+					//top : (this.window.innerHeight / 2 - (defaultHeight / 2)) + "px",
+					left : (current.getBoundingClientRect().width + pos.left) + "px", 
+					top : (current.getBoundingClientRect().height + pos.top) + "px",
 					width : defaultWidth + "px", 
 					height : defaultHeight + "px"
 				}
@@ -64,17 +76,17 @@ function setPreview(element, content, style) {
 	element.onmouseover = function() {
 		let preview = document.createElement("iframe")
 		preview.id = extensionID + "_preview_" + previewNum
-		//preview.innerHTML = content
 		preview.style.position = "absolute"
 		preview.style.left = style.left
 		preview.style.top = style.top
 		preview.style.width = style.width
 		preview.style.height = style.height
-		preview.style.backgroundColor = "red"
+		preview.style.backgroundColor = "white"
 		document.body.prepend(preview)
-		preview.contentDocument.body.innerHTML = "Huh huh huh"
-		console.log("Style set:")
-		console.log(preview.style)
+		//preview.contentDocument.body.innerHTML = "Huh huh huh"
+		console.log("Content to set in preview:")
+		console.log(content)
+		preview.contentDocument.write(content)
 	}
 	element.onmouseout = function() {
 		document.getElementById(extensionID + "_preview_" + previewNum).remove()
@@ -82,20 +94,18 @@ function setPreview(element, content, style) {
 	previewNum++
 }
 
-function getPreviewContent(url) {
-	console.log(url)
+async function getPreviewContent(url) {
+	console.log("Get preview content for: " + url)
 	if (cachedResponses[url]) {
-		console.log("Cached response: ")
-		console.log(cachedResponses[url])
+		console.log("Cached response for: " + url)
 		return cachedResponses[url];
 	}
 	else {
-		chrome.runtime.sendMessage(extensionID, url, function(response) {
-			console.log("Content script received response from background:")
-			console.log(response)
+		return new Promise((resolve, reject) => {chrome.runtime.sendMessage(extensionID, url, function(response) {
+			console.log("Content script received content from background (so not cached response)")
 			cachedResponses[url] = response
-			return cachedResponses[url]
-		});
+			resolve(cachedResponses[url]);
+		})});
 	}
 }
 
@@ -104,11 +114,8 @@ function getPreviewContent(url) {
 window.addEventListener("load", async function load(event){
     window.removeEventListener("load", load, false); //remove listener, no longer needed
 	postMessage({linkPreview:"init"}, "*")
+	console.log("Wait 2 sec to see if webapp responds")
     await new Promise(r => setTimeout(r, 2000));
-	if (inspectIDs.size == 0) {
-		console.log("No length...")
-	}
-	console.log("Inspect IDs")
-	console.log(inspectIDs)
+	console.log("Waiting done, received " + inspectIDs.size + " number of IDs the webapp wants to inspect.")
 	setup()
 },false);

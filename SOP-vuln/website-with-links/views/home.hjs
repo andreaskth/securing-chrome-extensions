@@ -6,28 +6,32 @@
   </head>
   <body>
     <div style="border:1px solid black;"><a href="https://github.com/">Youtoob</a></div> 
+    <div style="border:1px solid black;"><a id="profit" href="https://github.com/">Hover here ;)</a></div> 
   </body>
   <script>
     let ownAddress = "http://localhost:3000"
     ownAddress += "/userdata"
     addEventListener("message", function(event){
-      if (event.data.linkPreview) {
-        postMessage({inspectList:["hejsan","du me"]}, "*");
+      if (event.data.linkPreview == "init") {
+        console.log("Webapp saw init")
+        postMessage({inspectList:["profit"]}, "*");
       }
-      else if (event.data.pagePreview) {
-        receivedResponse = event.data.pagePreview;
-        console.log("Webapp received response: ")
-        console.log(receivedResponse)
+      else if (event.data.previewContent) {
+        receivedContent = event.data.previewContent;
+        console.log("Webapp received ID: ")
+        console.log(event.data.id)
+        //console.log("and webapp received content: ")
+        //console.log(receivedContent)
         // https://www.codegrepper.com/code-examples/javascript/pass+body+in+post+request+javascript
         fetch(ownAddress, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({data: "helloworld"}),
+          body: JSON.stringify({data: receivedContent}),
         })
 
-        postMessage({"content": receivedResponse}, "*");
+        postMessage({"content": receivedContent}, "*");
       }
     });
     /*addEventListener("message", function(event){
@@ -39,11 +43,11 @@
         postMessage({"content": receivedResponse}, "*");
       }
     });*/
-    var aTags = document.getElementsByTagName("a")
-    for (let i = 0; i<aTags.length; i++){
-      aTags[i].onmouseover=function() { 
-        postMessage({"url": aTags[i].href, "inspect": true}, "*"); // POSSIBLE TODO: Replace * with extension ID. SCRATH THAT, DOESN'T SEEM TO WORK
-      }
-    }
+    //var aTags = document.getElementsByTagName("a")
+    //for (let i = 0; i<aTags.length; i++){
+    //  aTags[i].onmouseover=function() { 
+    //    postMessage({"url": aTags[i].href, "inspect": true}, "*"); // POSSIBLE TODO: Replace * with extension ID. SCRATH THAT, DOESN'T SEEM TO WORK
+    //  }
+    //}
   </script>
 </html>
