@@ -1,6 +1,14 @@
 # Securing Chrome-extensions
 
-TODO: Write about the repo here, and link to report.
+This repository contains three showcases of vulnerable Chrome extenions. They were made to exemplify some risks with creating extensions without considering security aspects. Since extensions execute with elevated privileges, any possible vulnerabilities may be exploited by malicious websites to carry out privileged tasks on behalf of the website (a sort of *confused deputy*-attack).
+
+The three vulnerable extensions reside in sub-folders of their own, and each such sub-folder contains a README detailing some brief background theory and how to run the extension. The three extensions are:
+
+* **unsafe-fetch-vuln** (available [here](TODO)), which is an extension that injects unsanitized content fetched from a third-party content provider, leading to leakage of user cookies
+* **tracking-vuln** (available [here](TODO)), which is an extension that fetches content from a third-party content provider, inadvertently causing leakage of the user's browsing history to said content provider
+* **SOP-vuln** (available [here](TODO)), which is an extension that allows websites to bypass the Same-Origin-Policy, allowing them access to the user's sensitive data
+
+For more background information and possible fixes for the vulnerabilities in the extensions of this repo, you can refer to the report we wrote (also part of this project). It is available in pdf format [here](TODO). (TODO: Add pdf of report in repo, and link to it here.)
 
 ## How to make web server externally accessible with `ngrok`
 
