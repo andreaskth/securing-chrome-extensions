@@ -5,7 +5,6 @@
     <title>Don't worry about it :)</title>
   </head>
   <body>
-    <img src="/dragon.png">
     <div style="border:1px solid black;"><a href="https://www.youtube.com/">Youtoob</a></div> 
   </body>
   <script>
