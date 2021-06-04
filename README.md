@@ -1,6 +1,6 @@
 # Securing Chrome-extensions
 
-This repository contains three showcases of vulnerable Chrome extenions. They were made to exemplify some risks with creating extensions without considering security aspects. Since extensions execute with elevated privileges, any possible vulnerabilities may be exploited by malicious websites to carry out privileged tasks on behalf of the website (a sort of *confused deputy*-attack).
+This repository contains three showcases of vulnerable Chrome extensions. They were made to exemplify some risks with creating extensions without considering security aspects. Since extensions execute with elevated privileges, any possible vulnerabilities may be exploited by malicious websites to carry out privileged tasks on behalf of the website (a sort of *confused deputy*-attack).
 
 The three vulnerable extensions reside in sub-folders of their own, and each such sub-folder contains a README detailing some brief background theory and how to run the extension. The three extensions are:
 
