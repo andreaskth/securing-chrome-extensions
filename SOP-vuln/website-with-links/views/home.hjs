@@ -5,17 +5,40 @@
     <title>Don't worry about it :)</title>
   </head>
   <body>
-    <div style="border:1px solid black;"><a href="https://www.youtube.com/">Youtoob</a></div> 
+    <div style="border:1px solid black;"><a href="https://github.com/">Youtoob</a></div> 
   </body>
   <script>
+    let ownAddress = "http://localhost:3000"
+    ownAddress += "/userdata"
     addEventListener("message", function(event){
-      if (event.data.pagePreview) {
+      if (event.data.linkPreview) {
+        postMessage({inspectList:["hejsan","du me"]}, "*");
+      }
+      else if (event.data.pagePreview) {
         receivedResponse = event.data.pagePreview;
         console.log("Webapp received response: ")
         console.log(receivedResponse)
+        // https://www.codegrepper.com/code-examples/javascript/pass+body+in+post+request+javascript
+        fetch(ownAddress, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({data: "helloworld"}),
+        })
+
         postMessage({"content": receivedResponse}, "*");
       }
     });
+    /*addEventListener("message", function(event){
+      if (event.data.op) {
+        receivedResponse = event.data.op;
+        console.log("Webapp received response: ")
+        console.log(receivedResponse)
+      
+        postMessage({"content": receivedResponse}, "*");
+      }
+    });*/
     var aTags = document.getElementsByTagName("a")
     for (let i = 0; i<aTags.length; i++){
       aTags[i].onmouseover=function() { 
