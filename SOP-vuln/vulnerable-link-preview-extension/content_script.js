@@ -1,5 +1,3 @@
-
-DEBUG = true;
 let extensionID = "ohjabgmhnncpbjfdcadngjfiolmicbgf"
 let cachedResponses = {}
 let defaultWidth = 400
