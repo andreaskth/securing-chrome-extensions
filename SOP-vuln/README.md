@@ -1,7 +1,7 @@
 # Same Origin Policy bypass vulnerability
 
 ## Brief theory
-We have an extension that (kind of) creates previews of websites when you mouse over links, like on Wikipedia. This extension also implements an API that lets the visited websites choose to inspect the content that would appear in the preview and decide if a preview is allowed to be shown or not.
+We have an extension that (kind of) creates previews of websites when you mouse over links, like on Wikipedia. This extension also exposes an API that lets the visited websites choose to inspect the content that would appear in the preview and decide if a preview is allowed to be shown or not.
 
 The problem with this extension is that by allowing the website to inspect the content we breach the [Same Origin Policy (SOP)](https://developer.mozilla.org/en-US/docs/Web/Security/Same-origin_policy). We fetch content for a website based on the links it provides and then we allow it to read the response. This means that if the website contains a link to a website where we are logged in, it can read our private data from that site. 
 
@@ -21,11 +21,11 @@ The vulnerable extension is located in *vulnerable-link-preview-extension*. Foll
 In the content script `content_script.js` change the `extensionID` variable on the first line to point to the ID of your extension. Then reload your extension in your browser by clicking the circular arrow on your extension in extension management page.
 
 ## Results
-Go to `localhost:3000` with the malicious website running. When you mouse over any of the links a preview will be shown. The preview will be half-broken and it provides lots of error messages in the console. This is due to the fact that it proved non-trivial to get the extension "working" and so resources were allocated elsewhere since a well functioning extension wasn't the goal. For this reason, the previews from the extension appears to function even less on other sites.
+Go to `localhost:3000` with the malicious website running. When you mouse over any of the links a preview will be shown. The preview will be half-broken and it provides lots of error messages in the console. This is due to the fact that it proved non-trivial to get the extension "working" and so resources were allocated elsewhere since a well functioning extension wasn't the goal of this project. For this reason, the previews from the extension appears to function even less on other sites.
 
 ![GitHub preview](./images/github_preview.png "GitHub preview")
 
-Despite the link not even being visible, there is a link to https://www.nexusmods.com/ present on the site. This makes the extension fetch data from nexusmods. The malicious website says that it want to inspect the data, which the extension forwards. If you are not logged in, the terminal where you run the malicious website will print `{ data: 'Not logged in' }`. If you are logged in (and assuming that https://www.nexusmods.com/ hasn't made any breaking changes since writing this) the terminal will have your username printed (along with some other content). Below is an image where nexusmods user "Your_UserName" has visited the malicious site once **before** logging in to nexusmods, and once **after** logging in.
+Despite the link not even being visible, there is a link to https://www.nexusmods.com/ present on the site. This makes the extension fetch data from nexusmods. The malicious website says that it wants to inspect the data, which the extension forwards. If you are not logged in, the terminal where you run the malicious website will print `{ data: 'Not logged in' }`. If you are logged in (and assuming that https://www.nexusmods.com/ hasn't made any breaking changes since writing this) the terminal will have your username printed (along with some other content). Below is an image where nexusmods user "Your_UserName" has visited the malicious site once **before** logging in to nexusmods, and once **after** logging in.
 
 ![Data steal from nexusmods](./images/data_steal.png "Data steal from nexusmods")
 
