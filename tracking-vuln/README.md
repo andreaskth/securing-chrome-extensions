@@ -28,9 +28,9 @@ Every website you visit will contain a lovely easter egg for you to collect!
 However, every time you visit a website and is greeted by an easter egg, your IP-address and the host, the scheme and the domain of the page is printed in the terminal where you are running the webserver. For example, if you visit `https://www.kth.se/utbildning` then `https://www.kth.se/` is printed along with your IP-address.
 
 ## How to fix
-The first thing to consider is to not load the images from a third-party provider: this would eliminate this issue altogether. Instead you could just bundle the images with the extension. Here, we will instead showcase an alternative solution if you for some reason insist on loading the images from a third party provider.
+The first thing to consider is to not load the images from a third-party provider: this would eliminate the issue altogether. Instead you could just bundle the images with the extension. Here, we will instead showcase an alternative solution if you for some reason insist on loading the images from a third party provider.
 
-(Note that when referring to line numbers, the original lines are intended, NOT the lines after you have started making changes. Also note that we provide a fixed version of the extension so you do not have to follow along with these instrcutions to test it out)
+(Note that when referring to line numbers, the original lines are intended, NOT the lines after you have started making changes. Also note that we provide a fixed version of the extension so you do not have to follow along with these instructions to test it out)
 
 ### egg.js of the vulnerable extension
 The first thing we have to do is to replace the way we are getting the image; when directly setting the `src` attribute in an image tag we have no control over the outgoing HTTP-request. Thus we remove line 38. We also replace line 66 (which would add the egg to the page) with the following:
