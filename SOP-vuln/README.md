@@ -18,10 +18,10 @@ When the site is up, you can visit `localhost:3000` to verify that you can see a
 ### Extension
 The vulnerable extension is located in *vulnerable-link-preview-extension*. Follow the instructions in the [main README](https://github.com/andreaskth/securing-chrome-extensions/tree/main#how-to-load-extensions-into-your-browser-locally) to load the extension into your browser locally. 
 
-In the content script `content_script.js` change the `extensionID` variable on the first line to point to the ID of your extension. Then reload your extension in your browser by clicking the circular arrow on your extension in extension management page.
+In the content script `content_script.js` change the `extensionID` variable on the first line to point to the ID of your extension. Then reload your extension in your browser by clicking the circular arrow on your extension in the extension management page.
 
 ## Results
-Go to `localhost:3000` with the malicious website running. When you mouse over any of the links a preview will be shown. The preview will be half-broken and it provides lots of error messages in the console. This is due to the fact that it proved non-trivial to get the extension "working" and so resources were allocated elsewhere since a well functioning extension wasn't the goal of this project. For this reason, the previews from the extension appears to function even less on other sites.
+Go to `localhost:3000` with the malicious website running. When you mouse over any of the links, a preview will be shown. The preview will be half-broken and it generates lots of error messages in the console. This is due to the fact that it proved non-trivial to get the extension "working" and so resources were allocated elsewhere since a well-functioning extension wasn't the goal of this project. For this reason, the previews from the extension appear to function even less on other sites.
 
 ![GitHub preview](./images/github_preview.png "GitHub preview")
 
@@ -30,13 +30,13 @@ Despite the link not even being visible, there is a link to https://www.nexusmod
 ![Data steal from nexusmods](./images/data_steal.png "Data steal from nexusmods")
 
 ## How to fix
-It really is just a matter of not allowing the visited websites to read the content of the previews. Lines 56-58 in `content_script.js` of the vulnerable extension looks like this:
+It really is just a matter of not allowing the visited websites to read the content of the previews. Lines 56-58 in `content_script.js` of the vulnerable extension look like this:
 ```javascript
 if (inspectIDs.has(current.id)) {
-			postMessage({"id":current.id, "previewContent":content})
-		}
+	postMessage({"id":current.id, "previewContent":content})
+}
 ```
 
 Instead of the `postMessage` you can just do nothing. This will mean that instead of allowing the website to inspect the content and make decisions, the API of the extension only allows the website to name the links it does not want previews for. But this is a small sacrifice in making the extension safe.
 
-Lines 17-35 of `content_script.js` are a bit superflous now. The purpose of these lines was to allow the website to add previews for links that it had said no to earlier, if it changed its mind after inspecting the content. That said, there's no harm in leaving them.
+Lines 17-35 of `content_script.js` are a bit superfluous now. The purpose of these lines was to allow the website to add previews for links that it had said no to earlier, if it changed its mind after inspecting the content. That said, there's no harm in leaving them.
