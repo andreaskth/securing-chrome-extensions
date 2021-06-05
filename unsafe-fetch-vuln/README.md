@@ -20,7 +20,7 @@ New request to /hacker: foo
 
 To make the web server externally accessible, you can use [ngrok](https://ngrok.com/) as described in the [main README](https://github.com/andreaskth/securing-chrome-extensions#how-to-make-web-server-externally-accessible-with-ngrok). Once you have a URL for the server, copy that URL to the `URL` variable in `app.js`. As an example, this URL would be `https://d6ecc19b8dc0.ngrok.io` based on the image in the main README.
 
-If you wish, you can also change the `DEBUG` and `HACKER_MODE` variables in `app.js`. The `DEBUG` flag will toggle `alert()`s for different stages of the attack, and the `HACKER_MODE` flag toggles whether or not the web server returns benign content or not.
+If you wish, you can also change the `DEBUG` and `HACKER_MODE` variables in `app.js`. The `DEBUG` flag will toggle `alert()`s for different stages of the attack, and the `HACKER_MODE` flag toggles whether the web server returns benign content or not.
 
 ### Extension
 
@@ -44,3 +44,9 @@ And when `HACKER_MODE` is enabled (emulating a malicious or compromised content 
 But, in the terminal you will see the leaked cookies of the user:
 
 ![Leaked cookies](./images/leaked-cookies.png "Leaked cookies")
+
+## How to fix
+
+As mentioned in the beginning of this README, the problem here is that the extension trusts the content provider to return benign content. To solve this, the extension should sanitize the content it fetches. For example, if we expect the content provider to return only certain HTML tags, it makes sense to remove any other tags if they are sent.
+
+An even better idea might be to instead fetch only "plain" data from a content provider (such as plain text) and then have the extension take care of what the HTML should look like. If data fetched from the content provider is treated as text, it does not matter what the "payload" looks like, since it will not be executed.
