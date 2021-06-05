@@ -13,10 +13,10 @@ As outlined in the [main README](https://github.com/andreaskth/securing-chrome-e
 
 When the web server is running, you can visit `localhost:3000` to verify that you can see a list of links pointing to images.  
 
-To make the web server externally accessible, you can for example utilize *ngrok* as described in the [main README]((https://github.com/andreaskth/securing-chrome-extensions#how-to-make-web-server-externally-accessible-with-ngrok)).
+To make the web server externally accessible, you can for example utilize *ngrok* as described in the [main README](https://github.com/andreaskth/securing-chrome-extensions#how-to-make-web-server-externally-accessible-with-ngrok).
 
 ### Extension
-The vulnerable extensions is located in *vulnerable-easter-eggstention*. In the content script `egg.js` change the `imageSrc` variable on the first line to point to the URL where the web server is hosted (for example, the ngrok.io URL if you are using that). The addition of `"/images/"` on the second line should not be removed since this path is necessary to access the individual images.
+The vulnerable extension is located in *vulnerable-easter-eggstention*. In the content script `egg.js` change the `imageSrc` variable on the first line to point to the URL where the web server is hosted (for example, the ngrok.io URL if you are using that). The addition of `"/images/"` on the second line should not be removed since this path is necessary to access the individual images.
 
 Next, follow the instructions in the [main README](https://github.com/andreaskth/securing-chrome-extensions#how-to-load-extensions-into-your-browser-locally) to load the extension into your browser locally. 
 
@@ -25,7 +25,7 @@ Every website you visit will contain a lovely easter egg for you to collect!
 
 ![Easter egg at the KTH website](./images/egg_at_kth.png "Easter egg at the KTH website")
 
-However, every time you visit a website and is greeted by an easter egg, your IP-address and the host, the scheme and the domain of the page is printed in the terminal where you are running the webserver. For example, if you visit `https://www.kth.se/utbildning` then `https://www.kth.se/` is printed along with your IP-address.
+However, every time you visit a website and are greeted by an easter egg, your IP-address and the host, the scheme, and the domain of the page is printed in the terminal where you are running the webserver. For example, if you visit `https://www.kth.se/utbildning` then `https://www.kth.se/` is printed along with your IP-address.
 
 ## How to fix
 The first thing to consider is to not load the images from a third-party provider: this would eliminate the issue altogether. Instead you could just bundle the images with the extension. Here, we will instead showcase an alternative solution if you for some reason insist on loading the images from a third party provider.
@@ -63,9 +63,9 @@ Here we send the image URL as a query parameter to our proxy.
 While this server is supposedly out of your control (hence why it being able to track you is a problem) it is worth noting that due to the change of how we perform the HTTP-request, it is necessary that the server allows [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) for your origin for any image you request. This would look something like this in the server code: `res.header("Access-Control-Allow-Origin", "*");`.
 
 ### <a name="proxyServer">Proxy server</a>
-In the *proxy-server* folder, the `app.js` file contains a simple proxy server. This proxy server will serve the purpose of hiding your "origin" by being the one issuing the HTTP-request to the image provider. All it does is receiving your original HTTP-request and then redirecting it to the image provider.
+In the *proxy-server* folder, the `app.js` file contains a simple proxy server. This proxy server will serve the purpose of hiding your "origin" by being the one issuing the HTTP-request to the image provider. All it does is receive your original HTTP-request and then redirect it to the image provider.
 
- To run it enter the folder and run `npm install` and then `node app.js`. The default port is 3001; this can be changed in the `app.js` file. Similarly to the malicious webserver (the image provider) this proxy needs to be made visible (for example with *ngrok*), and then have the URL it is visible on added to the `proxyServer` variable in the `egg.js` file.
+ To run it enter the folder and run `npm install` and then `node app.js`. The default port is 3001; this can be changed in the `app.js` file. Similarly to the malicious webserver (the image provider), this proxy needs to be made visible (for example with *ngrok*), and then have the URL it is visible on added to the `proxyServer` variable in the `egg.js` file.
 
 ### How to run the safe extension
 If you want to see all changes made between the vulnerability and the fix, have a look at [this commit](https://github.com/andreaskth/securing-chrome-extensions/commit/89991010ae52044e0ffa748dae207573cf43afa1). The folder *rerouted-http-easter-eggstention* contains the safe version of the extension. To summarize what you have to do to run this:
@@ -75,4 +75,4 @@ If you want to see all changes made between the vulnerability and the fix, have 
 * Run `node app.js` in both the *proxy-server* folder and the *image-provider-webserver* folder (change the necessary ports beforehand if you have port 3000 and/or 3001 occupied).
 * Load the safe extension of folder *rerouted-http-easter-eggstention* into your browser and load a website.
 
-The proxy server will still see what website you visit, but this is fine since you control it. The image provider should not be able to see it anymore.
+The proxy server will still see what websites you visit, but this is fine since you control it. The image provider should not be able to see it anymore.
