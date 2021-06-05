@@ -8,7 +8,7 @@ The problem with this extension is that when the HTTP requests are sent they con
 ## How to run
 
 ### Web server
-As outlined in the [main README](../README.md), enter the web server folder (here called 
+As outlined in the [main README](https://github.com/andreaskth/securing-chrome-extensions/tree/main#how-to-run-a-node-web-server), enter the web server folder (here called 
 *image-provider-webserver*) and run `npm install`, and then run `node app.js` in the same folder to start the server. The default port used by the server is 3000; if you are using this port for something else you can change the port in `app.js` (don't forget to change the other occurrences of 3000 in this document as well).
 
 When the web server is running, you can visit `localhost:3000` to verify that you can see a list of links pointing to images.  
