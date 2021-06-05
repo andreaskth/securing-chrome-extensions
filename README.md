@@ -10,6 +10,11 @@ The three vulnerable extensions reside in sub-folders of their own, and each suc
 
 For more background information and possible fixes for the vulnerabilities in the extensions of this repo, you can refer to the report we wrote (also part of this project). It is available in pdf format [here](TODO). (TODO: Add pdf of report in repo, and link to it here.)
 
+## How to run a node web server
+The websites included in this repo are all implemented using [Node.js](https://nodejs.org/en/) and [Express](https://expressjs.com/). To start the server for one of the websites, enter the folder of the website (for example [unsafe-fetch-vuln/web-server/](https://github.com/andreaskth/securing-chrome-extensions/tree/main/unsafe-fetch-vuln/web-server)). Run `npm install` to install the necessary dependencies (if it was not there before, you will see a new `node_modules` folder was added). Then, in the same folder, run `node` followed by the name of the main file of the website to launch the application. All main files of the websites in this repo are called `app.js`, so you would run `node app.js`. The website should now be accesible in your browser if you go to `localhost:` followed by the port number of the application (the default port numbers are specifed in the README:s of the folders for the vulnerabilities). 
+
+If the default port number is already occupied on you computer, you can edit the `app.js` to listen on another port. Look for a line looknig like `.listen('3000', () => {` and change the number to your desired port number.
+
 ## How to make web server externally accessible with `ngrok`
 
 To make a web server externally accessible, you can install [ngrok](https://ngrok.com/) and execute:
