@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Get yer images here</title>
+  </head>
+  <body>
+    <!-- <img src="/images/dragon_egg.png"> -->
+    <div id="imageList">
+
+    </div>
+  </body>
+  <script>
+    var images = {{{ images }}}
+    for (let i = 0; i < images.length; i++) {
+      var wrapper = document.createElement("div")
+      var el = document.createElement("a")
+      wrapper.append(el)
+      el.href = "/images/" + images[i]
+      el.append(images[i])
+      document.getElementById("imageList").append(wrapper)
+    }
+  </script>
+</html>
