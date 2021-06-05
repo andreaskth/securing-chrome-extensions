@@ -25,7 +25,7 @@ Go to `localhost:3000` with the malicious website running. When you mouse over a
 
 ![GitHub preview](./images/github_preview.png "GitHub preview")
 
-Despite the link not even being visible, there is a link to https://www.nexusmods.com/ present on the site. This makes the extension fetch data from nexusmods. The malicious website says that it wants to inspect the data, which the extension forwards. If you are not logged in, the terminal where you run the malicious website will print `{ data: 'Not logged in' }`. If you are logged in (and assuming that https://www.nexusmods.com/ hasn't made any breaking changes since writing this) the terminal will have your username printed (along with some other content). Below is an image where nexusmods user "Your_UserName" has visited the malicious site once **before** logging in to nexusmods, and once **after** logging in.
+Despite the link not even being visible, there is a link to https://www.nexusmods.com/ present on the site. This makes the extension fetch data from nexusmods. The malicious website says that it wants to inspect the data, which the extension forwards. If you are not logged in, the terminal where you run the malicious website will print `{ data: 'Not logged in' }`. If you are logged in (and assuming that https://www.nexusmods.com/ hasn't made any breaking changes since writing this), the terminal will have your username printed (along with some other content). Below is an image where nexusmods user "Your_UserName" has visited the malicious site once **before** logging in to nexusmods, and once **after** logging in.
 
 ![Data steal from nexusmods](./images/data_steal.png "Data steal from nexusmods")
 
