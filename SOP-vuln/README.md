@@ -10,13 +10,13 @@ Normally the SOP prevents websites from reading the response if they request dat
 ## How to run
 
 ### Malicious website
-As outlined in the [main README](../README.md), enter the website folder (here called 
+As outlined in the [main README](https://github.com/andreaskth/securing-chrome-extensions/tree/main#how-to-run-a-node-web-server), enter the website folder (here called 
 *website-with-links*) and run `npm install`, and then run `node app.js` in the same folder to start the server. The default port used by the server is 3000; if you are using this port for something else you can change the port in `app.js` (don't forget to change the other occurrences of 3000 in this document as well).
 
 When the site is up, you can visit `localhost:3000` to verify that you can see a couple of hyperlinks.  
 
 ### Extension
-The vulnerable extension is located in *vulnerable-link-preview-extension*. Follow the instructions in the [main README](../README.md) to load the extension into your browser locally. 
+The vulnerable extension is located in *vulnerable-link-preview-extension*. Follow the instructions in the [main README](https://github.com/andreaskth/securing-chrome-extensions/tree/main#how-to-load-extensions-into-your-browser-locally) to load the extension into your browser locally. 
 
 In the content script `content_script.js` change the `extensionID` variable on the first line to point to the ID of your extension. Then reload your extension in your browser by clicking the circular arrow on your extension in extension management page.
 
