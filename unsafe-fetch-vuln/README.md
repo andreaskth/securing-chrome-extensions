@@ -18,7 +18,9 @@ When the web server is running, you can visit `localhost:3001/hacker/foo` to ver
 New request to /hacker: foo
 ```
 
-To make the web server externally accessible, you can use [ngrok](https://ngrok.com/) as described in the [main README](https://github.com/andreaskth/securing-chrome-extensions#how-to-make-web-server-externally-accessible-with-ngrok). Once you have a URL for the server, copy that URL to the `URL` variable in `app.js`. As an example, this URL would be `https://d6ecc19b8dc0.ngrok.io` based on the image in the main README.
+(The web server will not respond with anything, so the browser will keep loading the page. But don't worry, as long as you get output in the terminal, things are working as expected.)
+
+To make the web server externally accessible, you can use [ngrok](https://ngrok.com/) as described in the [main README](https://github.com/andreaskth/securing-chrome-extensions#how-to-make-web-server-externally-accessible-with-ngrok). Once you have a URL for the server, copy that URL to the `URL` variable in `app.js`. As an example, this URL would be `https://d6ecc19b8dc0.ngrok.io` based on the image in the main README. Don't forget to restart the web server after making this change.
 
 If you wish, you can also change the `DEBUG` and `HACKER_MODE` variables in `app.js`. The `DEBUG` flag will toggle `alert()`s for different stages of the attack, and the `HACKER_MODE` flag toggles whether the web server returns benign content or not.
 
